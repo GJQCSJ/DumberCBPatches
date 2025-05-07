@@ -14,19 +14,14 @@ public static class MilkAsDumbUpdatePatch
         {
             if (unit is Character chr)
             {
-                int type = UnityEngine.Random.Range(0, 2);
-                if (type == 0 && unit is Female)
+                bool doTrait = UnityEngine.Random.Range(0, 2) == 0 && chr is Female;
+                if (doTrait)
                 {
-                    int raw = UnityEngine.Random.Range(93, 99);
-                    ETrait chosen = (ETrait)raw;
-                    if (chr.TraitList.Contains(chosen))
-                    {
-                        chr.UpgradeTrait(chosen);
-                    }
-                    else
-                    {
+                    ETrait chosen = (ETrait)UnityEngine.Random.Range(93, 99);
+                    if (!chr.TraitList.Contains(chosen))
                         chr.AddTrait(chosen);
-                    }
+                    // 硬 +1
+                    chr.AddTraitValue(chosen, 1f);
                 }
                 else
                 {
@@ -37,6 +32,7 @@ public static class MilkAsDumbUpdatePatch
                         {
                             BuffHelpers.SetInt(ConfigBuffs.SlaveWombSize, wombSize + 1, female);
                         }
+ 
                     }
                 }
                 unit.PopUpMessage("Upgrade successful");
