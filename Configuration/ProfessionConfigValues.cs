@@ -35,6 +35,8 @@ namespace DumberCBPatches.Configuration
                 Values[profName] = jobDict;
 
                 // Bind simple properties
+                BindEntry(cfg, section, "Tier", profData.Tier,
+                    v => profData.Tier = v);
                 BindEntry(cfg, section, "Teachable", profData.Teachable,
                     v => profData.Teachable = v);
 
@@ -90,6 +92,7 @@ namespace DumberCBPatches.Configuration
                         v => job.ValueMax = v);
                     var chance = BindEntry(cfg, section, keyBase + "_Chance", job.Chance,
                         v => job.Chance = v, new AcceptableValueRange<int>(0, 100));
+                    
 
                     jobDict[job.Name] = new JobConfigEntries(val, max, chance);
                 }
@@ -137,11 +140,13 @@ namespace DumberCBPatches.Configuration
         public JobConfigEntries(
             ConfigEntry<float> value,
             ConfigEntry<float> valueMax,
-            ConfigEntry<int> chance)
+            ConfigEntry<int> chance
+            )
         {
             Value = value;
             ValueMax = valueMax;
             Chance = chance;
+            
         }
     }
 }

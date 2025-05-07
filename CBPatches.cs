@@ -7,6 +7,7 @@ using HarmonyLib;
 using HarmonyLib.Tools;
 using System;
 using DumberCBPatches.Configuration;
+using ComplexBreeding.Patches;
 
 namespace DumberCBPatches
 {
@@ -26,6 +27,8 @@ namespace DumberCBPatches
         public static CharacterConfigValues CharacterConfig;
         public static PlayerConfigValues PlayerConfig;
 
+        public static ProfessionRarityConfigValues ProfessionRarityConfig;
+
 
 
         /// <summary>
@@ -39,6 +42,7 @@ namespace DumberCBPatches
             SpeciesConfig = new SpeciesConfigValues(Config);
             PlayerConfig = new PlayerConfigValues(Config);
             CharacterConfig = new CharacterConfigValues(Config);
+            ProfessionRarityConfig = new ProfessionRarityConfigValues(Config);
 
             if (Enabled.Value)
             {
