@@ -1,21 +1,17 @@
 ﻿using HarmonyLib;
 using MBMScripts;
-using ComplexBreeding.Patches;
-using ComplexBreeding.Reflections;
 
-namespace DumberCBPatches.Item
+[HarmonyPatch(typeof(Item), "Use")]
+[HarmonyPriority(Priority.LowerThanNormal)] 
+public static class CosmeticPillOverridePatch
 {
+    [HarmonyPrefix]
+    public static void PostPrefix(Item __instance, EItemType ___m_ItemType, Unit unit, ref bool __runOriginal)
+    {
+        if (___m_ItemType != EItemType.Item_CosmeticPill)
+            return;
 
-    [HarmonyPatch(typeof(MBMScripts.Item), "Use")]
-    static class CosmeticPillOverridePatch
-    {  
-        static void Postfix(ref bool __result, EItemType ___m_ItemType, Unit unit)
-        {
-            if (___m_ItemType == EItemType.Item_CosmeticPill)
-            {
-
-                __result = true;
-            }
-        }
+        // Override UsePatch results
+        __runOriginal = true; // Frocibly run original use method
     }
 }
