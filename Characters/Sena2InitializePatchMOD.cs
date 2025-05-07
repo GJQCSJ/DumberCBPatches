@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ComplexBreeding.Mechanics;
+﻿using ComplexBreeding.Mechanics;
 using ComplexBreeding.SpeciesCore.Data;
 using ComplexBreeding.SpeciesCore;
 using HarmonyLib;
 using MBMScripts;
 using ComplexBreeding.Species.Data;
 using ComplexBreeding.Species;
+using DumberCBPatches.Configuration;
 
 namespace DumberCBPatches.Characters
 {
@@ -23,13 +19,21 @@ namespace DumberCBPatches.Characters
             __instance.ClearRaceTrait();
             __instance.ClearTrait();
             __instance.DisplayName = "Sena";
-            ISpeciesCoreData data = SheepSpeciesCoreData.Data;
-            __instance.SetSpeciesGameplayStats(data);
-            __instance.SetPersonality();
 
             var cfg = DumberCBPatches.CBPatches.CharacterConfig
                       .Values["Sena2"];
 
+            var choice = cfg.SpeciesType.Value;
+            if (CharacterConfigValues.speciesDataMap.TryGetValue(choice, out var sd))
+            {
+                __instance.SetSpeciesGameplayStats(sd);
+            }
+            else if (CharacterConfigValues.speciesCoreDataMap.TryGetValue(choice, out var scd))
+            {
+                __instance.SetSpeciesGameplayStats(scd);
+            }
+
+            __instance.SetPersonality();
             __instance.TitsType = cfg.TitsType.Value;
 
 

@@ -5,11 +5,7 @@ using BepInEx.Logging;
 using BepInEx.Unity.Mono;
 using HarmonyLib;
 using HarmonyLib.Tools;
-using HarmonyLib;
 using System;
-using BepInEx.Logging;
-using BepInEx.Core.Logging.Interpolation;
-using BepInEx.Configuration;
 using DumberCBPatches.Configuration;
 
 namespace DumberCBPatches
@@ -37,7 +33,7 @@ namespace DumberCBPatches
         /// </summary>
         private void Awake()
         {
-            Enabled = Config.Bind("General", "Enable Patches", true, "Essence list: \r\n demonic - 93\r\nelemental - 95\r\neternal - 96\r\nferal - 98\r\nmagical - 97\r\nsacred - 94");
+            Enabled = Config.Bind("General", "Enable Patches", true, "Essence list:\r\ndemonic - 93\r\nelemental - 95\r\neternal - 96\r\nferal - 98\r\nmagical - 97\r\nsacred - 94");
      
             ProfessionConfig = new ProfessionConfigValues(Config);
             SpeciesConfig = new SpeciesConfigValues(Config);
@@ -48,7 +44,7 @@ namespace DumberCBPatches
             {
                 var harmony = new Harmony(GUID);
                 harmony.PatchAll();
-                Logger.LogInfo("[CBPatches] Harmony patches applied.");
+                Logger.LogInfo("[DumberCBPatches] Harmony patches applied.");
             }
         }
 
