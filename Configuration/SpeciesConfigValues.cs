@@ -19,38 +19,45 @@ namespace DumberCBPatches.Configuration
             "Slime","Succubus","Vampire","Wererabbit","Werewolf"
         };
 
+        static readonly string[] TargetCoreSpecies = {
+            "Elf","Gnome","Human","Imp","Lizard","Rabbit","Sheep","Wolf"
+        };
+
         public readonly Dictionary<string, SpeciesConfigEntries> Values
             = new Dictionary<string, SpeciesConfigEntries>(StringComparer.OrdinalIgnoreCase);
 
         public SpeciesConfigValues(ConfigFile cfg)
         {
-            foreach (var spName in TargetSpecies)
+            foreach (var spName in TargetSpecies.Concat(TargetCoreSpecies))
             {
-                var spData = GameData.SpeciesDataList
+                bool isCore = TargetCoreSpecies.Contains(spName, StringComparer.OrdinalIgnoreCase);
+
+                var dataItem = GameData.SpeciesDataList
                     .FirstOrDefault(s => s.Name.Equals(spName, StringComparison.OrdinalIgnoreCase));
-                if (spData == null) continue;
+
+                if (dataItem == null) continue;
 
                 var section = $"Species:{spName}";
                 var entry = new SpeciesConfigEntries();
                 Values[spName] = entry;
 
-                entry.BaseChance = BindEntry(cfg, section, "BaseChance", spData.BaseChance,
-                    v => spData.BaseChance = v);
+                entry.BaseChance = BindEntry(cfg, section, "BaseChance", dataItem.BaseChance,
+                    v => dataItem.BaseChance = v);
 
                 // Bind PossiblyMothers as CSV of strings (string[])
                 BindCsv(cfg, section, "PossiblyMothers",
-                    spData.PossiblyMothers ?? Array.Empty<string>(),
-                    arr => spData.PossiblyMothers = arr.ToArray());
+                    dataItem.PossiblyMothers ?? Array.Empty<string>(),
+                    arr => dataItem.PossiblyMothers = arr.ToArray());
 
                 BindCsv(cfg, section, "PossiblyFathers",
-                    spData.PossiblyFathers?.Select(x => x.ToString()),
-                    arr => spData.PossiblyFathers = arr
+                    dataItem.PossiblyFathers?.Select(x => x.ToString()),
+                    arr => dataItem.PossiblyFathers = arr
                         .Select(s => (ERace)Enum.Parse(typeof(ERace), s))
                         .ToArray());
 
                 BindCsv(cfg, section, "RequiredEssences",
-                    spData.RequiredEssences?.Select(kv => $"{kv.Key}:{kv.Value}"),
-                    arr => spData.RequiredEssences = arr
+                    dataItem.RequiredEssences?.Select(kv => $"{kv.Key}:{kv.Value}"),
+                    arr => dataItem.RequiredEssences = arr
                         .Select(p => p.Split(':'))
                         .Where(parts => parts.Length == 2)
                         .ToDictionary(
@@ -59,8 +66,8 @@ namespace DumberCBPatches.Configuration
                         ));
 
                 BindCsv(cfg, section, "ForbiddenEssences",
-                    spData.ForbiddenEssences?.Select(x => x.ToString()),
-                    arr => spData.ForbiddenEssences = arr
+                    dataItem.ForbiddenEssences?.Select(x => x.ToString()),
+                    arr => dataItem.ForbiddenEssences = arr
                         .Select(s => (ETrait)Enum.Parse(typeof(ETrait), s))
                         .ToList());
             }
