@@ -27,6 +27,7 @@ namespace DumberCBPatches
 
         // toggle for whether to apply all patches
         private static ConfigEntry<bool> EnablePatches;
+        public static ConfigEntry<bool> EnableRarityPatch;
 
         private void Awake()
         {
@@ -40,6 +41,8 @@ namespace DumberCBPatches
                 true,
                 "Essence list:\r\ndemonic - 93\r\nelemental - 95\r\neternal - 96\r\nferal - 98\r\nmagical - 97\r\nsacred - 94"
             );
+
+            EnableRarityPatch = Config.Bind("ProfessionRarity", "Enable Custom Rarity Patch", true, "Do you want to enable custom profession rarity logic?");
 
             // instantiate your config-holders
             ProfessionConfig = new ProfessionConfigValues(Config);
