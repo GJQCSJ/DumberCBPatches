@@ -19,6 +19,10 @@
     <None Remove="Species\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="PixyTest.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <Reference Include="0Harmony">
