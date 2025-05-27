@@ -37,24 +37,45 @@ namespace DumberCBPatches
             // assign our logger so everyone can call CBPatches.Log
             Log = Logger;
 
+            // Define config root and instantiate separate config files
+            string configRoot = Paths.ConfigPath;
+
+            var speciesCfg = new ConfigFile(Path.Combine(configRoot, "DumberCBPatches.Species.cfg"), true);
+            var characterCfg = new ConfigFile(Path.Combine(configRoot, "DumberCBPatches.Characters.cfg"), true);
+            var professionCfg = new ConfigFile(Path.Combine(configRoot, "DumberCBPatches.Professions.cfg"), true);
+            var playerCfg = new ConfigFile(Path.Combine(configRoot, "DumberCBPatches.Player.cfg"), true);
+            var rarityCfg = new ConfigFile(Path.Combine(configRoot, "DumberCBPatches.Rarity.cfg"), true);
+
+            // Bind profession rarity toggle in its own file
+            EnableRarityPatch = rarityCfg.Bind("ProfessionRarity", "Enable Custom Rarity Patch", true, "Do you want to enable custom profession rarity logic?");
+
+            // Create per-module configuration instances
+            ProfessionConfig = new ProfessionConfigValues(professionCfg);
+            SpeciesConfig = new SpeciesConfigValues(speciesCfg);
+            CharacterConfig = new CharacterConfigValues(characterCfg);
+            PlayerConfig = new PlayerConfigValues(playerCfg);
+            ProfessionRarityConfig = new ProfessionRarityConfigValues(rarityCfg);
+
+            // Trait-based pricing (keep in default config file)
+            string traitPriceSection = "TraitPriceAdjustments";
+
+
             // bind  "enable/disable" toggle
-            EnablePatches = Config.Bind(
-                "General",
-                "Enable Patches",
-                true,
-                "Essence list:\r\ndemonic - 93\r\nelemental - 95\r\neternal - 96\r\nferal - 98\r\nmagical - 97\r\nsacred - 94"
-            );
+            //EnablePatches = Config.Bind(
+            //    "General",
+            //    "Enable Patches",
+            //    true,
+            //    "Essence list:\r\ndemonic - 93\r\nelemental - 95\r\neternal - 96\r\nferal - 98\r\nmagical - 97\r\nsacred - 94"
+            //);
 
-            EnableRarityPatch = Config.Bind("ProfessionRarity", "Enable Custom Rarity Patch", true, "Do you want to enable custom profession rarity logic?");
+            //EnableRarityPatch = Config.Bind("ProfessionRarity", "Enable Custom Rarity Patch", true, "Do you want to enable custom profession rarity logic?");
 
-            // instantiate config-holders
-            ProfessionConfig = new ProfessionConfigValues(Config);
-            SpeciesConfig = new SpeciesConfigValues(Config);
-            CharacterConfig = new CharacterConfigValues(Config);
-            PlayerConfig = new PlayerConfigValues(Config);
-            ProfessionRarityConfig = new ProfessionRarityConfigValues(Config);
-
-            var traitPriceSection = "TraitPriceAdjustments";
+            //// instantiate config-holders
+            //ProfessionConfig = new ProfessionConfigValues(Config);
+            //SpeciesConfig = new SpeciesConfigValues(Config);
+            //CharacterConfig = new CharacterConfigValues(Config);
+            //PlayerConfig = new PlayerConfigValues(Config);
+            //ProfessionRarityConfig = new ProfessionRarityConfigValues(Config);
 
             foreach (ETrait trait in Enum.GetValues(typeof(ETrait)))
             {
