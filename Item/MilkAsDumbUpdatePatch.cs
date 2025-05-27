@@ -14,26 +14,25 @@ public static class MilkAsDumbUpdatePatch
         {
             if (unit is Character chr)
             {
-                bool doTrait = UnityEngine.Random.Range(0, 2) == 0 && chr is Female;
+                bool doTrait =
+                    //UnityEngine.Random.Range(0, 2) == 0 && 
+                    chr is Female;
+                    ;
                 if (doTrait)
+                {
+                    if (unit is Female female && (int)female.GetWombSize() < 5)
+                    {
+                        int wombSize = (int)female.GetWombSize();
+                        BuffHelpers.SetInt(ConfigBuffs.SlaveWombSize, wombSize + 1, female);
+                    }
+                }
+                else
                 {
                     ETrait chosen = (ETrait)UnityEngine.Random.Range(93, 99);
                     if (!chr.TraitList.Contains(chosen))
                         chr.AddTrait(chosen);
-                    // 硬 +1
+                    // +1 anyway
                     chr.AddTraitValue(chosen, 1f);
-                }
-                else
-                {
-                    if (unit is Female female)
-                    {
-                        int wombSize = (int)female.GetWombSize();
-                        if (wombSize < 5)
-                        {
-                            BuffHelpers.SetInt(ConfigBuffs.SlaveWombSize, wombSize + 1, female);
-                        }
- 
-                    }
                 }
                 unit.PopUpMessage("Upgrade successful");
                 GameManager.Instance.PlayerData.AddAchievement(EAchievement.A000030);
