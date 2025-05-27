@@ -18,7 +18,7 @@ namespace DumberCBPatches
 
         public static ManualLogSource Log { get; private set; }
 
-        // your various per-area config holders
+        // various per-area config holders
         public static ProfessionConfigValues ProfessionConfig { get; private set; }
         public static SpeciesConfigValues SpeciesConfig { get; private set; }
         public static CharacterConfigValues CharacterConfig { get; private set; }
@@ -34,7 +34,7 @@ namespace DumberCBPatches
             // assign our logger so everyone can call CBPatches.Log
             Log = Logger;
 
-            // bind your "enable/disable" toggle
+            // bind  "enable/disable" toggle
             EnablePatches = Config.Bind(
                 "General",
                 "Enable Patches",
@@ -44,7 +44,7 @@ namespace DumberCBPatches
 
             EnableRarityPatch = Config.Bind("ProfessionRarity", "Enable Custom Rarity Patch", true, "Do you want to enable custom profession rarity logic?");
 
-            // instantiate your config-holders
+            // instantiate config-holders
             ProfessionConfig = new ProfessionConfigValues(Config);
             SpeciesConfig = new SpeciesConfigValues(Config);
             CharacterConfig = new CharacterConfigValues(Config);

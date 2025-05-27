@@ -15,7 +15,7 @@ namespace DumberCBPatches.Configuration
     {
         static readonly string[] TargetProfessions = {
             "Artificer","Blacksmith","Cultist","Farmhand","Hunter",
-            "Knight","Maid","Paladin","Princess","Warrior",
+            "Knight","Maid","Paladin","Princess","Warrior", "Preist",
             "Witch","Wizard"
         };
 
