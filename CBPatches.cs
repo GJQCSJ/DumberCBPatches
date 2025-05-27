@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
@@ -27,15 +29,22 @@ namespace DumberCBPatches
         public static ProfessionRarityConfigValues ProfessionRarityConfig { get; private set; }
         public static Dictionary<ETrait, int> TraitPriceModifiers = new();
 
-
         // toggle for whether to apply all patches
         private static ConfigEntry<bool> EnablePatches;
         public static ConfigEntry<bool> EnableRarityPatch;
 
         private void Awake()
         {
-            // assign our logger so everyone can call CBPatches.Log
             Log = Logger;
+
+            // general patch toggle remains in default config file
+            EnablePatches = Config.Bind(
+                "General",
+                "Enable Patches",
+                true,
+                "Whether to enable all Harmony patches." +
+                "\r\nEssence list:\r\ndemonic - 93\r\nelemental - 95\r\neternal - 96\r\nferal - 98\r\nmagical - 97\r\nsacred - 94"
+            );
 
             // Define config root and instantiate separate config files
             string configRoot = Paths.ConfigPath;
@@ -58,32 +67,12 @@ namespace DumberCBPatches
 
             // Trait-based pricing (keep in default config file)
             string traitPriceSection = "TraitPriceAdjustments";
-
-
-            // bind  "enable/disable" toggle
-            //EnablePatches = Config.Bind(
-            //    "General",
-            //    "Enable Patches",
-            //    true,
-            //    "Essence list:\r\ndemonic - 93\r\nelemental - 95\r\neternal - 96\r\nferal - 98\r\nmagical - 97\r\nsacred - 94"
-            //);
-
-            //EnableRarityPatch = Config.Bind("ProfessionRarity", "Enable Custom Rarity Patch", true, "Do you want to enable custom profession rarity logic?");
-
-            //// instantiate config-holders
-            //ProfessionConfig = new ProfessionConfigValues(Config);
-            //SpeciesConfig = new SpeciesConfigValues(Config);
-            //CharacterConfig = new CharacterConfigValues(Config);
-            //PlayerConfig = new PlayerConfigValues(Config);
-            //ProfessionRarityConfig = new ProfessionRarityConfigValues(Config);
-
             foreach (ETrait trait in Enum.GetValues(typeof(ETrait)))
             {
                 string key = trait.ToString();
                 var entry = Config.Bind(traitPriceSection, key, 0, $"Price adjustment for trait {key}");
                 TraitPriceModifiers[trait] = entry.Value;
             }
-
 
             if (EnablePatches.Value)
             {
