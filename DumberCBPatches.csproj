@@ -42,6 +42,9 @@
     <Reference Include="ComplexBreeding">
       <HintPath>G:\DOWNLOADS\games\Monster Black Market V2.0.16.0 w DLC w Uncen\BepInEx\plugins\ComplexBreeding.dll</HintPath>
     </Reference>
+    <Reference Include="MBMModsServices">
+      <HintPath>G:\DOWNLOADS\games\Monster Black Market V2.0.16.0 w DLC w Uncen\BepInEx\plugins\MBMModsServices.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>G:\DOWNLOADS\games\Monster Black Market V2.0.16.0 w DLC w Uncen\MonsterBlackMarket_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
@@ -51,7 +54,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Characters\" />
+    <Folder Include="CharactersPatch\" />
   </ItemGroup>
 
 </Project>
