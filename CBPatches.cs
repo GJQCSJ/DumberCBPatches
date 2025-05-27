@@ -5,6 +5,7 @@ using BepInEx.Logging;
 using HarmonyLib;
 using BepInEx.Unity.Mono;
 using DumberCBPatches.Configuration;
+using MBMScripts;
 
 namespace DumberCBPatches
 {
@@ -24,6 +25,8 @@ namespace DumberCBPatches
         public static CharacterConfigValues CharacterConfig { get; private set; }
         public static PlayerConfigValues PlayerConfig { get; private set; }
         public static ProfessionRarityConfigValues ProfessionRarityConfig { get; private set; }
+        public static Dictionary<ETrait, int> TraitPriceModifiers = new();
+
 
         // toggle for whether to apply all patches
         private static ConfigEntry<bool> EnablePatches;
@@ -50,6 +53,16 @@ namespace DumberCBPatches
             CharacterConfig = new CharacterConfigValues(Config);
             PlayerConfig = new PlayerConfigValues(Config);
             ProfessionRarityConfig = new ProfessionRarityConfigValues(Config);
+
+            var traitPriceSection = "TraitPriceAdjustments";
+
+            foreach (ETrait trait in Enum.GetValues(typeof(ETrait)))
+            {
+                string key = trait.ToString();
+                var entry = Config.Bind(traitPriceSection, key, 0, $"Price adjustment for trait {key}");
+                TraitPriceModifiers[trait] = entry.Value;
+            }
+
 
             if (EnablePatches.Value)
             {

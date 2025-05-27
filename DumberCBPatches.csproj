@@ -51,7 +51,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Characters\" />
+    <Folder Include="CharactersPatch\" />
   </ItemGroup>
 
 </Project>
