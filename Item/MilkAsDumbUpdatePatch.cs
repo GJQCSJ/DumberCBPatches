@@ -25,15 +25,16 @@ public static class MilkAsDumbUpdatePatch
                         int wombSize = (int)female.GetWombSize();
                         BuffHelpers.SetInt(ConfigBuffs.SlaveWombSize, wombSize + 1, female);
                     }
+                    else
+                    {
+                        ETrait chosen = (ETrait)UnityEngine.Random.Range(93, 99);
+                        if (!chr.TraitList.Contains(chosen))
+                            chr.AddTrait(chosen);
+                        // +1 anyway
+                        chr.AddTraitValue(chosen, 1f);
+                    }
                 }
-                else
-                {
-                    ETrait chosen = (ETrait)UnityEngine.Random.Range(93, 99);
-                    if (!chr.TraitList.Contains(chosen))
-                        chr.AddTrait(chosen);
-                    // +1 anyway
-                    chr.AddTraitValue(chosen, 1f);
-                }
+                
                 unit.PopUpMessage("Upgrade successful");
                 GameManager.Instance.PlayerData.AddAchievement(EAchievement.A000030);
             }
